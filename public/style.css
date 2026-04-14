@@ -648,6 +648,31 @@ header .subtitle {
   color: #b91c1c;
 }
 
+.action-cell {
+  white-space: nowrap;
+  display: flex;
+  gap: 6px;
+}
+
+.edit-row td {
+  background: #f8f9fb;
+  padding: 0 !important;
+}
+
+.inline-edit-form {
+  padding: 16px 16px 12px;
+}
+
+.inline-edit-form .form-group {
+  margin-bottom: 12px;
+}
+
+.hint {
+  font-weight: 400;
+  color: #888;
+  font-size: 12px;
+}
+
 .nowrap {
   white-space: nowrap;
 }

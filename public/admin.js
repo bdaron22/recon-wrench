@@ -93,13 +93,48 @@ async function loadUsers() {
     }
     let html = '<table class="admin-table"><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Status</th><th>Actions</th></tr></thead><tbody>';
     users.forEach(u => {
-      html += `<tr>
+      html += `<tr id="user-row-${u.id}">
         <td>${esc(u.name)}</td>
         <td>${esc(u.username)}</td>
         <td><span class="role-badge role-${u.role}">${u.role}</span></td>
         <td><span class="status-badge status-${u.active ? 'active' : 'inactive'}">${u.active ? 'Active' : 'Inactive'}</span></td>
-        <td>
+        <td class="action-cell">
+          <button class="btn-sm" onclick="showEditUser('${u.id}', '${esc(u.name)}', '${esc(u.username)}', '${u.role}')">Edit</button>
           <button class="btn-sm" onclick="toggleUser('${u.id}', ${!u.active})">${u.active ? 'Deactivate' : 'Activate'}</button>
+        </td>
+      </tr>
+      <tr id="edit-row-${u.id}" class="edit-row hidden">
+        <td colspan="5">
+          <div class="inline-edit-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Display Name</label>
+                <input type="text" id="edit-name-${u.id}" value="${esc(u.name)}">
+              </div>
+              <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="edit-username-${u.id}" value="${esc(u.username)}">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>New Password <span class="hint">(leave blank to keep current)</span></label>
+                <input type="password" id="edit-password-${u.id}" placeholder="Leave blank to keep current">
+              </div>
+              <div class="form-group">
+                <label>Role</label>
+                <select id="edit-role-${u.id}">
+                  <option value="tech" ${u.role === 'tech' ? 'selected' : ''}>Tech</option>
+                  <option value="admin" ${u.role === 'admin' ? 'selected' : ''}>Admin</option>
+                </select>
+              </div>
+            </div>
+            <div id="edit-error-${u.id}" class="login-error hidden"></div>
+            <div class="form-actions">
+              <button class="btn-primary" onclick="saveEditUser('${u.id}')">Save Changes</button>
+              <button class="btn-secondary" onclick="cancelEditUser('${u.id}')">Cancel</button>
+            </div>
+          </div>
         </td>
       </tr>`;
     });
@@ -107,6 +142,52 @@ async function loadUsers() {
     container.innerHTML = html;
   } catch (err) {
     container.innerHTML = '<p class="error">Failed to load users.</p>';
+  }
+}
+
+function showEditUser(id) {
+  // Hide any other open edit rows
+  document.querySelectorAll('.edit-row').forEach(r => r.classList.add('hidden'));
+  document.getElementById('edit-row-' + id).classList.remove('hidden');
+}
+
+function cancelEditUser(id) {
+  document.getElementById('edit-row-' + id).classList.add('hidden');
+}
+
+async function saveEditUser(id) {
+  const name = document.getElementById('edit-name-' + id).value.trim();
+  const username = document.getElementById('edit-username-' + id).value.trim();
+  const password = document.getElementById('edit-password-' + id).value;
+  const role = document.getElementById('edit-role-' + id).value;
+  const errorEl = document.getElementById('edit-error-' + id);
+  errorEl.classList.add('hidden');
+
+  if (!name || !username) {
+    errorEl.textContent = 'Name and username are required';
+    errorEl.classList.remove('hidden');
+    return;
+  }
+  if (password && password.length < 6) {
+    errorEl.textContent = 'Password must be at least 6 characters';
+    errorEl.classList.remove('hidden');
+    return;
+  }
+
+  const updates = { name, username, role };
+  if (password) updates.password = password;
+
+  try {
+    const res = await authFetch('/api/admin/users/' + id, {
+      method: 'PATCH',
+      body: JSON.stringify(updates)
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to update user');
+    loadUsers();
+  } catch (err) {
+    errorEl.textContent = err.message;
+    errorEl.classList.remove('hidden');
   }
 }
 

@@ -159,11 +159,18 @@ app.patch('/api/admin/users/:id', requireAuth, requireAdmin, async (req, res) =>
     if (req.body.active !== undefined) updates.active = req.body.active;
     if (req.body.role) updates.role = req.body.role;
     if (req.body.name) updates.name = req.body.name;
+    if (req.body.username) updates.email = req.body.username.toLowerCase() + '@bobeuckman.local';
     if (req.body.password) {
       updates.password = req.body.password;
       updates.passwordConfirm = req.body.password;
     }
-    await req.pb.collection('staff').update(req.params.id, updates);
+    // Use superuser client for admin updates (allows password changes without oldPassword)
+    const adminClient = getPb();
+    const adminAuth = await adminClient.collection('_superusers').authWithPassword(
+      process.env.PB_ADMIN_EMAIL || 'gotobobrent@gmail.com',
+      process.env.PB_ADMIN_PASSWORD || 'Emmyslice21!'
+    );
+    await adminClient.collection('staff').update(req.params.id, updates);
     res.json({ success: true });
   } catch (err) {
     console.error('Update user error:', err.message);
