@@ -15,6 +15,11 @@
         <div class="subtitle">Bo Beuckman Ford &mdash; Repair Order Documentation</div>
       </div>
     </div>
+    <div class="header-right">
+      <span id="user-name" class="user-badge"></span>
+      <a href="/admin.html" id="admin-link" class="admin-link hidden">Admin</a>
+      <button id="logout-btn" class="logout-btn">Logout</button>
+    </div>
   </header>
 
   <div class="container">
@@ -42,6 +47,7 @@
       <button id="back-btn" class="hidden">&larr; Back</button>
     </div>
 
+    <div id="category-bar" class="category-bar hidden"></div>
     <div id="options-grid"></div>
 
     <div id="output-section" class="output-section hidden">
@@ -55,6 +61,8 @@
     </div>
   </div>
 
+  <script src="auth.js"></script>
+  <script src="repair-data.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

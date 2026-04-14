@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Recon Wrench</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo-area">
+      <div class="logo-icon">&#128295;</div>
+      <div>
+        <h1>Recon Wrench</h1>
+        <div class="subtitle">Admin Panel</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <a href="/" class="admin-link">Back to App</a>
+      <button id="logout-btn" class="logout-btn">Logout</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="admin-tabs">
+      <button class="admin-tab active" data-tab="users">Users</button>
+      <button class="admin-tab" data-tab="history">Repair History</button>
+    </div>
+
+    <!-- Users Tab -->
+    <div id="tab-users" class="tab-content active">
+      <div class="admin-header">
+        <h2>Manage Users</h2>
+        <button id="add-user-btn" class="btn-primary">+ Add User</button>
+      </div>
+
+      <div id="add-user-form" class="add-user-form hidden">
+        <h3>New User</h3>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Display Name</label>
+            <input type="text" id="new-name" placeholder="John Smith">
+          </div>
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" id="new-username" placeholder="jsmith">
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="new-password" placeholder="Min 6 characters">
+          </div>
+          <div class="form-group">
+            <label>Role</label>
+            <select id="new-role">
+              <option value="tech">Tech</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+        </div>
+        <div id="form-error" class="login-error hidden"></div>
+        <div class="form-actions">
+          <button id="save-user-btn" class="btn-primary">Create User</button>
+          <button id="cancel-user-btn" class="btn-secondary">Cancel</button>
+        </div>
+      </div>
+
+      <div id="users-list" class="admin-table-wrap"></div>
+    </div>
+
+    <!-- History Tab -->
+    <div id="tab-history" class="tab-content">
+      <h2>Repair Order History</h2>
+      <div id="repairs-list" class="admin-table-wrap"></div>
+      <div id="pagination" class="pagination"></div>
+    </div>
+  </div>
+
+  <script src="auth.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
