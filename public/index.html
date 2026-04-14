@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recon Wrench — Bo Beuckman Ford</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <div class="logo-area">
+      <div class="logo-icon">&#128295;</div>
+      <div>
+        <h1>Recon Wrench</h1>
+        <div class="subtitle">Bo Beuckman Ford &mdash; Repair Order Documentation</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="steps-bar">
+      <div class="step-indicator active">
+        <span class="step-num">1</span>
+        <span class="step-label">Repair Type</span>
+      </div>
+      <div class="step-indicator">
+        <span class="step-num">2</span>
+        <span class="step-label">Concern</span>
+      </div>
+      <div class="step-indicator">
+        <span class="step-num">3</span>
+        <span class="step-label">Condition</span>
+      </div>
+      <div class="step-indicator">
+        <span class="step-num">4</span>
+        <span class="step-label">Correction</span>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <h2 id="step-title">Select Repair Type</h2>
+      <button id="back-btn" class="hidden">&larr; Back</button>
+    </div>
+
+    <div id="options-grid"></div>
+
+    <div id="output-section" class="output-section hidden">
+      <div class="output-box">
+        <pre id="output-text"></pre>
+      </div>
+      <div class="action-buttons">
+        <button id="copy-btn">Copy to Clipboard</button>
+        <button id="reset-btn">Start Over</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
